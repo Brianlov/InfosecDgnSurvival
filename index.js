@@ -16,9 +16,9 @@ app.use(inventoryRoute)
 app.use(nextActionRoute)
 app.use(registrationRoute)
 
-// app.get('/', (req, res) => {
-//    res.send('Welcome to dungeon dive game!')
-// })
+app.get('/', (req, res) => {
+   res.send('Welcome to dungeon dive game!')
+ })
 
 let no_endpoint_message = `The endpoint you entered is not available
 Here are some endpoints available
