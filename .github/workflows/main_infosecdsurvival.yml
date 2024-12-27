@@ -68,6 +68,6 @@ jobs:
           app-name: 'InfosecDSurvival'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6CF51290D7B44828B17F0DDB6F8E84D6 }}
+          
   
           
