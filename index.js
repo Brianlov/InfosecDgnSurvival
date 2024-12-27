@@ -50,9 +50,9 @@ GET - /stats
 GET - /wiki
 GET - /leaderboard`
 
-app.use((req, res) => {
-  res.send(no_endpoint_message)
-})
+// app.use((req, res) => {
+//   res.send(no_endpoint_message)
+// })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get('/', (req, res) => {
