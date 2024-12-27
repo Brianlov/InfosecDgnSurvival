@@ -25,4 +25,4 @@
 
 - 🏆 The player’s scores will display at the leader-board after losing the battle
 
-- :mailbox:How to reach me: [![Linkedin Badge](https://img.shields.io/badge/-kakbar-blue?style=flat&logo=Linkedin&logoColor=white)](your-linkedin-url)
+
