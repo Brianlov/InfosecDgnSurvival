@@ -7,7 +7,7 @@ module.exports = { getPlayerStats }
 async function getPlayerStats(playerId, res) {
 
     //Validate! Check if the player exists
-    let player = await client.db('ds_db').collection('stats').findOne(
+    let player = await client.db('infosec').collection('stats').findOne(
         { playerId: playerId }
     )
 
