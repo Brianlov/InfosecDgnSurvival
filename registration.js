@@ -45,7 +45,7 @@ let { randomise_enemy_skill } = require(`./update_enemy.js`)
 
 registrationRouter.post('/account/login',async(req,res) => { 
     // step #1:req.body.username
-      let result = await client.db("infosec").collection("account").findOne({
+      let result = await client.db("info").collection("account").findOne({
         player: req.body.player
     })
     console.log(result);
@@ -104,7 +104,7 @@ registrationRouter.post('/account/login',async(req,res) => {
       return
     }
     else{
-    let result= await client.db("infosec").collection("account").findOne({
+    let result= await client.db("info").collection("account").findOne({
       _id: new ObjectId(req.params.id)
     })
     res.send(`Player name : ${result.player}\n _id: ${result._id}`)
@@ -116,7 +116,7 @@ registrationRouter.post('/account/login',async(req,res) => {
 // Get the leaderboard
 
 registrationRouter.get('/leaderboard', async(req, res) => {
-    let LatestLB = await client.db("infosec").collection("leaderboard")
+    let LatestLB = await client.db("info").collection("leaderboard")
         .find()
         .sort({ score: -1 }) // Sort by score in descending order
         .toArray();
@@ -138,7 +138,7 @@ registrationRouter.post('/account/register',async(req,res)=>{
     return
   }
 
-    let Exists= await client.db("infosec").collection("account").findOne({
+    let Exists= await client.db("info").collection("account").findOne({
         player:req.body.player
     });
     if(Exists){
@@ -147,12 +147,12 @@ registrationRouter.post('/account/register',async(req,res)=>{
     }
     else{
         const hash = bcrypt.hashSync(req.body.password, 10);
-        let result= await client.db("infosec").collection("account").insertOne({
+        let result= await client.db("info").collection("account").insertOne({
             player:req.body.player,
             password:hash
        
         });
-        let result1 = await client.db('infosec').collection('almanac').aggregate([{$sample:{size:1}}]).toArray();
+        let result1 = await client.db('info').collection('almanac').aggregate([{$sample:{size:1}}]).toArray();
       let document = result1[0]; // get the first document from the result array
       // let skills = document.skill;
 
@@ -164,7 +164,7 @@ registrationRouter.post('/account/register',async(req,res)=>{
       
       let the_enemy_skill = await randomise_enemy_skill(document.enemy)
 
-      let statPlayer= await client.db("infosec").collection("stats").insertOne({
+      let statPlayer= await client.db("info").collection("stats").insertOne({
           playerId:req.body.player,
           health_pts:10,
           attack_action:10,
@@ -179,7 +179,7 @@ registrationRouter.post('/account/register',async(req,res)=>{
      })
     }
     
-    let give_id = await client.db('infosec').collection('account').findOne(
+    let give_id = await client.db('info').collection('account').findOne(
       { player: req.body.player }
      )
 
@@ -191,7 +191,7 @@ registrationRouter.post('/account/register',async(req,res)=>{
 //forget userid
 
 registrationRouter.post('/account/forgetuserID', async(req, res) => {
-    let result = await client.db("infosec").collection("account").findOne({
+    let result = await client.db("info").collection("account").findOne({
       player: req.body.player
         
     })
@@ -231,7 +231,7 @@ registrationRouter.patch ("/account/changepassword" ,async (req, res) => {
       return res.status(400).send('New password is required');
   }
 
-    let findUser = await client.db('infosec').collection('account').findOne({player:req.body.player});
+    let findUser = await client.db('info').collection('account').findOne({player:req.body.player});
 
     if(!findUser) {
       res.send('user not found')
@@ -241,7 +241,7 @@ registrationRouter.patch ("/account/changepassword" ,async (req, res) => {
         if (bcrypt.compareSync(req.body.password, findUser.password) == true){ //compare the password with the hashed password in the database
         
         req.body.password = bcrypt.hashSync(req.body.newpassword, 10); //hash the new password
-        await client.db('infosec').collection('account').updateOne({player:req.body.player}, {$set: {password:req.body.password}}); //update the password in the database
+        await client.db('info').collection('account').updateOne({player:req.body.player}, {$set: {password:req.body.password}}); //update the password in the database
         res.send('password changed successfully');
         } 
         else { //password is incorrect
@@ -254,7 +254,7 @@ registrationRouter.patch ("/account/changepassword" ,async (req, res) => {
 //delete current account
 registrationRouter.delete('/account/delete/:id',verifyToken, async(req, res) => {
 
-  let player = await client.db("infosec").collection("account").findOne(
+  let player = await client.db("info").collection("account").findOne(
     { _id: new ObjectId(req.params.id) }
   )
 
@@ -277,19 +277,19 @@ registrationRouter.delete('/account/delete/:id',verifyToken, async(req, res) => 
         }
         else{
 
-        let result= await client.db("infosec").collection("account").deleteOne({
+        let result= await client.db("info").collection("account").deleteOne({
             _id: new ObjectId(req.params.id)
         })
 
-        let delete_stats = await client.db("infosec").collection("stats").deleteOne(
+        let delete_stats = await client.db("info").collection("stats").deleteOne(
           { playerId: player.player }
         )
 
-        let delete_leaderboard = await client.db('infosec').collection('leaderboard').deleteOne(
+        let delete_leaderboard = await client.db('info').collection('leaderboard').deleteOne(
           { player: player.player }
         )
 
-        let delete_action = await client.db('infosec').collection('leaderboard').deleteOne(
+        let delete_action = await client.db('info').collection('leaderboard').deleteOne(
           { playerId: player.player }
         )
         

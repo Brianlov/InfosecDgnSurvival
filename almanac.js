@@ -6,7 +6,7 @@ let client = require(`./database.js`)
 
 AlmanacRouter.get('/wiki', async (req, res) => {
 
-    let enemies = await client.db('infosec').collection('almanac').find().toArray();
+    let enemies = await client.db('info').collection('almanac').find().toArray();
 
     res.send(enemies);
 })

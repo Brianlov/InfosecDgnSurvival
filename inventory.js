@@ -2,7 +2,7 @@ const express=require('express');
 const InventoryRouter=express.Router();
 module.exports=InventoryRouter;
 const client = require('./database')
-const db = client.db('infosec');
+const db = client.db('info');
 
 let { compareToken } = require('./token.js')
 

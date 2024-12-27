@@ -5,9 +5,9 @@ module.exports = Action_Router;
 const bcrypt = require('bcrypt') //DELETE LATER
 
 let client = require(`./database.js`)
-let infosec = client.db('infosec')
-let collection_action = infosec.collection('action')
-let collection_stats = infosec.collection('stats')
+let info = client.db('info')
+let collection_action = info.collection('action')
+let collection_stats = info.collection('stats')
 
 let { getPlayerStats } = require(`./valid.js`)
 let { update_enemy } = require(`./update_enemy.js`)
@@ -294,7 +294,7 @@ async function isPlayerAlive(playerId, res) {
             { playerId: playerId }
         )
 
-        let player_leaderboard = await infosec.collection('leaderboard').insertOne(
+        let player_leaderboard = await info.collection('leaderboard').insertOne(
             {
                 player: final_stats.playerId,
                 score: final_stats.current_score,
