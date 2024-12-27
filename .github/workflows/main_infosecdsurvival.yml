@@ -47,25 +47,17 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EEAA615C6B2F44FD80FDC786214E24DF }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FD1F195558E64063A2B4E5BB4115A031 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5CB93CC0092D4CA3BE24831DF2D04239 }}
-
       - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'InfosecDSurvival'
+          app-name: 'InfosecDgnSurvival'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6CF51290D7B44828B17F0DDB6F8E84D6 }}
           package: .
+  
           
